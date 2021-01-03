@@ -1,0 +1,2 @@
+# DCODR
+Experimenting with TypeScript.

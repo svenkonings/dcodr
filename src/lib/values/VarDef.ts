@@ -36,6 +36,6 @@ export class VarDef extends Def {
     }
 }
 
-export const varDef = (name: string, type: ValueType, ...bruteForceValues: values): VarDef => {
+export const varDef = (name: string, type: ValueType, ...bruteForceValues: values) => {
     return new VarDef(name, type, ...bruteForceValues);
 }

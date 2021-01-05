@@ -36,7 +36,7 @@ export abstract class Coder {
      */
     applicable(input: string, ...args: optString[]): boolean {
         // One of the conversion checks failed
-        return this.convertArgs(input, ...args) instanceof Error;
+        return !(this.convertArgs(input, ...args) instanceof Error);
     }
 
     /**
@@ -112,7 +112,11 @@ export abstract class Coder {
 
     static convertType(arg: optString, def: Def): optValue | Error {
         if (arg === undefined) {
-            return undefined;
+            if (def instanceof VarDef) {
+                return Error(`[${def.name}] Missing variable`);
+            } else {
+                return undefined;
+            }
         }
         switch (def.type) {
             case ValueType.BOOLEAN:

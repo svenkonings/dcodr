@@ -1,15 +1,12 @@
-import {Caesar} from '../lib/coders/Caesar';
+import {WorkerMessage} from "../lib/worker/WorkerMessage";
 
-const caesar = new Caesar();
-{
-    const encoded = caesar._encode("Hello world!", 1);
-    const decoded = caesar._decode(encoded, 1)
-    console.log(encoded);
-    console.log(decoded);
+const worker = new Worker("worker.js");
+worker.onmessage = ev => document.getElementsByTagName("body")[0].innerHTML += ev.data + "<br/>"
+
+const message: WorkerMessage = {
+    coder: "Caesar Cipher",
+    mode: "encode",
+    input: "Hello world!",
+    args: ["1"]
 }
-{
-    const encoded = caesar.encode("Hello world!", "1");
-    const decoded = caesar.decode(encoded, "1")
-    console.log(encoded);
-    console.log(decoded);
-}
+worker.postMessage(message)

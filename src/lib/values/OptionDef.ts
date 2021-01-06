@@ -31,6 +31,6 @@ export class OptionDef extends Def {
     }
 }
 
-export const optionDef = (name: string, type: ValueType, defaultValue: value) => {
+export const optionDef = (name: string, type: ValueType, defaultValue: value): OptionDef => {
     return new OptionDef(name, type, defaultValue);
 }

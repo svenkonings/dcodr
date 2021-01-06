@@ -14,7 +14,6 @@ module.exports = {
                 use: {
                     loader: 'ts-loader',
                     options: {
-                        // disable type checker - we will use it in fork plugin
                         transpileOnly: true
                     }
                 },
@@ -22,9 +21,18 @@ module.exports = {
             },
         ],
     },
-    plugins: [new ForkTsCheckerWebpackPlugin({typescript: {build: true}})],
+    plugins: [
+        new ForkTsCheckerWebpackPlugin({
+            eslint: {
+                files: './src/**/*.{ts,tsx,js,jsx}'
+            },
+            typescript: {
+                build: true
+            }
+        })
+    ],
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
+        extensions: ['.tsx', '.ts', 'jsx', '.js'],
     },
     output: {
         filename: '[name].js',

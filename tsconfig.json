@@ -2,11 +2,7 @@
   "files": [],
   "references": [
     {
-      "path": "src/dom"
-    }, {
-      "path": "src/lib"
-    }, {
-      "path": "src/worker"
+      "path": "src"
     }
   ]
 }

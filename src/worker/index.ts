@@ -1,7 +1,7 @@
 import {WorkerMessage} from "../lib/worker/WorkerMessage";
 import {getCoder} from "../lib/coders/Coders";
 
-const ctx: Worker = self as any;
+const ctx: Worker = self as any; // eslint-disable-line
 ctx.onmessage = ev => {
     const message: WorkerMessage = ev.data;
     const coder = getCoder(message.coder);

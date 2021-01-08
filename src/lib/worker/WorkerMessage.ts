@@ -5,4 +5,4 @@ export type WorkerMessage = {
     mode: "encode" | "decode",
     input: string,
     args: optString[];
-}
+};

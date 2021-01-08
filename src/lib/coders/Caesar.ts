@@ -33,7 +33,7 @@ export class Caesar extends Coder {
         return this._encode(input, -shift, alphabet, ignoreCase);
     }
 
-    _checkArgs(input: string, shift: number, alphabet: string = abc, ignoreCase: boolean = ignore): Error | undefined {
+    _checkVars(input: string, shift: number, alphabet: string = abc, ignoreCase: boolean = ignore): Error | undefined {
         if (ignoreCase) {
             input = input.toLowerCase();
         }

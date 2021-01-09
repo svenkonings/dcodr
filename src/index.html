@@ -1,11 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-100">
 <head>
     <meta charset="UTF-8">
-    <title>DCodR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="bootstrap.min.css">
+    <title>DCodR</title>
 </head>
-<body>
+<body class="h-100">
+<div class="container-fluid py-2 h-100">
+    <div class="row h-100">
+        <div class="col-md h-100">
+            <div class="d-flex flex-column p-2 rounded-3 bg-light text-center h-100">
+                <h1>Input</h1>
+                <label for="input" class="form-label">Input</label>
+                <textarea id="input" class="form-control flex-grow-1"></textarea>
+                <br>
+                <div class="btn-group" role="group">
+                    <button id="encode" type="button" class="btn btn-success">Encode</button>
+                    <button id="decode" type="button" class="btn btn-danger">Decode</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md h-100">
+            <div class="p-2 rounded-3 bg-light text-center h-100 overflow-auto">
+                <h1>Output</h1>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="bootstrap.bundle.min.js"></script>
 <script src="main.js"></script>
 </body>

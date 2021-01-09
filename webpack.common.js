@@ -1,13 +1,13 @@
 const path = require('path');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 module.exports = {
     entry: {
         main: './src/dom/index.ts',
         worker: './src/worker/index.ts'
     },
-    mode: 'production',
     module: {
         rules: [
             {
@@ -23,6 +23,7 @@ module.exports = {
         ],
     },
     plugins: [
+        new CleanWebpackPlugin(),
         new ForkTsCheckerWebpackPlugin({
             eslint: {
                 files: './src/**/*.{ts,tsx,js,jsx}'
@@ -39,7 +40,7 @@ module.exports = {
                 {from: "node_modules/bootstrap/dist/css/bootstrap.min.css.map", to: "bootstrap.min.css.map"},
                 {from: "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js", to: "bootstrap.bundle.min.js"}
             ],
-        }),
+        })
     ],
     resolve: {
         extensions: ['.tsx', '.ts', 'jsx', '.js'],

@@ -1,5 +1,6 @@
 const path = require('path');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -29,7 +30,16 @@ module.exports = {
             typescript: {
                 build: true
             }
-        })
+        }),
+        new CopyPlugin({
+            patterns: [
+                {from: "src/index.html", to: "index.html"},
+                {from: "src/favicon.ico", to: "favicon.ico"},
+                {from: "node_modules/bootstrap/dist/css/bootstrap.min.css", to: "bootstrap.min.css"},
+                {from: "node_modules/bootstrap/dist/css/bootstrap.min.css.map", to: "bootstrap.min.css.map"},
+                {from: "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js", to: "bootstrap.bundle.min.js"}
+            ],
+        }),
     ],
     resolve: {
         extensions: ['.tsx', '.ts', 'jsx', '.js'],
@@ -38,4 +48,7 @@ module.exports = {
         filename: '[name].js',
         path: path.resolve(__dirname, 'dist'),
     },
+    performance: {
+        maxAssetSize: 500000
+    }
 };

@@ -1,3 +1,6 @@
+import 'bootstrap';
+import '../../scss/main.scss';
+
 import {coders, getCoder} from "../lib/coders/Coders";
 import {Coder} from "../lib/coders/Coder";
 
@@ -47,10 +50,17 @@ function removeVariable(row: HTMLElement) {
     let nextRow = row.nextElementSibling;
     while (nextRow !== null) {
         const name = getChild(nextRow, "value-name")
-        name.innerText = name.innerText.substring(0, name.innerText.length -1) + (+name.innerText.charAt(name.innerText.length -1) - 1);
+        renameVariable(name);
         nextRow = nextRow.nextElementSibling;
     }
     row.remove();
+}
+
+function renameVariable(name: HTMLElement) {
+    const prefix = "Variable ";
+    const number = name.innerText.substring(prefix.length);
+    const newNumber = (+number - 1).toString();
+    name.innerText = prefix + newNumber;
 }
 
 function initCoderSelect(step: HTMLElement): void {

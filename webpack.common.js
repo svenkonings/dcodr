@@ -1,44 +1,50 @@
 const path = require('path');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 module.exports = {
     entry: {
-        main: './src/dom/index.ts',
-        worker: './src/worker/index.ts'
+        main: './src/ts/dom/index.ts',
+        worker: './src/ts/worker/index.ts'
     },
     module: {
         rules: [
             {
-                test: /\.tsx?$/,
+                test: /\.tsx?$/i,
                 use: {
                     loader: 'ts-loader',
                     options: {
                         transpileOnly: true
                     }
-                },
-                exclude: /node_modules/
+                }
             },
+            {
+                test: /\.s[ac]ss$/i,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    'sass-loader'
+                ]
+            }
         ],
     },
     plugins: [
         new CleanWebpackPlugin(),
         new ForkTsCheckerWebpackPlugin({
             eslint: {
-                files: './src/**/*.{ts,tsx,js,jsx}'
+                files: './src/ts/**/*.{ts,tsx,js,jsx}'
             },
             typescript: {
                 build: true
             }
         }),
+        new MiniCssExtractPlugin(),
         new CopyPlugin({
             patterns: [
-                {from: "src/index.html", to: "index.html"},
-                {from: "src/favicon.ico", to: "favicon.ico"},
-                {from: "node_modules/bootstrap/dist/css/bootstrap.min.css", to: "bootstrap.min.css"},
-                {from: "node_modules/bootstrap/dist/css/bootstrap.min.css.map", to: "bootstrap.min.css.map"},
-                {from: "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js", to: "bootstrap.bundle.min.js"}
+                "src/html",
+                "src/img"
             ],
         })
     ],

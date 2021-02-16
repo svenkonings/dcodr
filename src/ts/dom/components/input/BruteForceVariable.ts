@@ -1,6 +1,6 @@
-import {Component} from "./Component";
+import {Component} from "../Component";
 import {Variables} from "./Variables";
-import {getTemplate} from "../util";
+import {getTemplate} from "../../util";
 
 const PREFIX = "Variable ";
 
@@ -36,10 +36,6 @@ export class BruteForceVariable extends Component {
     setNumber(number: number): void {
         this.number = number;
         this.name.innerText = PREFIX + this.number;
-    }
-
-    getNumber(): number {
-        return this.number;
     }
 
     isBruteForce(): boolean {

@@ -1,7 +1,7 @@
-import {Component} from "./Component";
-import {getTemplate} from "../util";
+import {Component} from "../Component";
+import {getTemplate} from "../../util";
 import {Settings} from "./Settings";
-import {OptionDef} from "../../lib/values/OptionDef";
+import {OptionDef} from "../../../lib/values/OptionDef";
 
 export class Setting extends Component {
     readonly parent: Settings;

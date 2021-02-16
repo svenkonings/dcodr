@@ -1,5 +1,5 @@
 import {Steps} from "./Steps";
-import {Component} from "./Component";
+import {Component} from "../Component";
 
 export class InputContainer extends Component {
     readonly element: HTMLDivElement;

@@ -1,6 +1,6 @@
 import {Step} from "./Step";
 import {InputContainer} from "./InputContainer";
-import {Component} from "./Component";
+import {Component} from "../Component";
 
 export class Steps extends Component {
     readonly parent: InputContainer;

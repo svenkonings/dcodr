@@ -1,10 +1,10 @@
 import {Steps} from "./Steps";
-import {getTemplate} from "../util";
-import {Component} from "./Component";
+import {getTemplate} from "../../util";
+import {Component} from "../Component";
 import {Variables} from "./Variables";
 import {Settings} from "./Settings";
-import {coders, getCoder} from "../../lib/coders/Coders";
-import {Coder} from "../../lib/coders/Coder";
+import {coders, getCoder} from "../../../lib/coders/Coders";
+import {Coder} from "../../../lib/coders/Coder";
 
 const BRUTE_FORCE = "Brute-force";
 

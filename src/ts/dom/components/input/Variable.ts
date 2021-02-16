@@ -1,7 +1,7 @@
-import {Component} from "./Component";
+import {Component} from "../Component";
 import {Variables} from "./Variables";
-import {getTemplate} from "../util";
-import {VarDef} from "../../lib/values/VarDef";
+import {getTemplate} from "../../util";
+import {VarDef} from "../../../lib/values/VarDef";
 
 export class Variable extends Component {
     readonly parent: Variables;

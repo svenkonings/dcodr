@@ -1,7 +1,7 @@
-import {Component} from "./Component";
+import {Component} from "../Component";
 import {Step} from "./Step";
 import {Setting} from "./Setting";
-import {OptionDef} from "../../lib/values/OptionDef";
+import {OptionDef} from "../../../lib/values/OptionDef";
 
 export class Settings extends Component {
     readonly parent: Step;

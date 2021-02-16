@@ -1,8 +1,8 @@
-import {Component} from "./Component";
+import {Component} from "../Component";
 import {Step} from "./Step";
 import {Variable} from "./Variable";
 import {BruteForceVariable} from "./BruteForceVariable";
-import {VarDef} from "../../lib/values/VarDef";
+import {VarDef} from "../../../lib/values/VarDef";
 
 export class Variables extends Component {
     readonly parent: Step;

@@ -1,8 +1,8 @@
-import {optString} from "../util/types";
+import {Mode} from "./Mode";
+import {Step} from "./Step";
 
 export type WorkerMessage = {
-    coder: string,
-    mode: "encode" | "decode",
     input: string,
-    args: optString[];
+    mode: Mode,
+    steps: Step[]
 };

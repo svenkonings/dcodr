@@ -3,10 +3,8 @@ import {getTemplate} from "../../util";
 import {Component} from "../Component";
 import {Variables} from "./Variables";
 import {Settings} from "./Settings";
-import {coders, getCoder} from "../../../lib/coders/Coders";
+import {BRUTE_FORCE, CODERS, getCoder} from "../../../lib/coders/Coders";
 import {Coder} from "../../../lib/coders/Coder";
-
-const BRUTE_FORCE = "Brute-force";
 
 export class Step extends Component {
     readonly parent: Steps;
@@ -33,8 +31,8 @@ export class Step extends Component {
 
     initCoderSelect(): void {
         this.addCoder(BRUTE_FORCE);
-        for (const coder of coders) {
-            this.addCoder(coder);
+        for (const coder of CODERS) {
+            this.addCoder(coder.name);
         }
         this.coderSelect.addEventListener("change", event => {
             const target = event.target as HTMLOptionElement;

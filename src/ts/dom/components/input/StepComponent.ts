@@ -60,6 +60,6 @@ export class StepComponent extends Component {
     }
 
     hideRemoveStepButton(hidden: boolean): void {
-        this.removeStepButton.hidden = hidden;
+        this.removeStepButton.style.visibility = hidden ? "hidden" : "visible";
     }
 }

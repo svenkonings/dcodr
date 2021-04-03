@@ -1,6 +1,6 @@
 import {optString} from "../util/types";
 
-// FIXME: Steps args should be split up in vars and settings
+// TODO: Steps args should be split up in vars and settings
 export type Step = {
     coder: string,
     args: optString[]

@@ -1,12 +1,13 @@
-import {CoderInput, CoderResult} from "../lib/worker/CoderResult";
+import {CoderInput, CoderOutput, CoderResult} from "../lib/worker/CoderResult";
 import {linkedStep, LinkedStep} from "../lib/worker/Step";
 import {BRUTE_FORCE, CODERS, getCoder} from "../lib/coders/Coders";
 import {Coder} from "../lib/coders/Coder";
-import {optValue} from "../lib/values/ValueType";
+import {value} from "../lib/values/ValueType";
 import {Mode} from "../lib/worker/Mode";
 import {hasBruteForce, WorkerInput} from "../lib/worker/WorkerInput";
 import {WorkerStatus} from "../lib/worker/WorkerStatus";
 import {WorkerOutput} from "../lib/worker/WorkerOutput";
+import {englishBigramScore} from "../lib/util/bigram";
 
 export function resolveSteps(message: WorkerInput): void {
     const postErrors = !hasBruteForce(message);
@@ -41,7 +42,7 @@ function resolveArguments(input: CoderInput, mode: Mode, step: LinkedStep, coder
         return;
     }
     // Fill-in brute-force variables
-    const possibleVars: optValue[][] = [];
+    const possibleVars: value[][] = [];
     for (let i = 0; i < convertedVars.length; i++) {
         if (i < coder.varDefs.length && convertedVars[i] === undefined) {
             const bruteForceValues = coder.varDefs[i].bruteForceValues
@@ -54,7 +55,7 @@ function resolveArguments(input: CoderInput, mode: Mode, step: LinkedStep, coder
                 possibleVars[i] = bruteForceValues;
             }
         } else {
-            possibleVars[i] = [convertedVars[i]];
+            possibleVars[i] = [convertedVars[i] as value];
         }
     }
 
@@ -62,7 +63,7 @@ function resolveArguments(input: CoderInput, mode: Mode, step: LinkedStep, coder
     resolveVars(input, mode, step, coder, possibleVars, postErrors)
 }
 
-function resolveVars(input: CoderInput, mode: Mode, step: LinkedStep, coder: Coder, possibleVars: optValue[][], postErrors: boolean, currentVars: optValue[] = [], column = 0) {
+function resolveVars(input: CoderInput, mode: Mode, step: LinkedStep, coder: Coder, possibleVars: value[][], postErrors: boolean, currentVars: value[] = [], column = 0) {
     const lastColumn = column === possibleVars.length - 1
     for (const row of possibleVars[column]) {
         currentVars.push(row);
@@ -75,7 +76,7 @@ function resolveVars(input: CoderInput, mode: Mode, step: LinkedStep, coder: Cod
     }
 }
 
-function resolve(input: CoderInput, mode: Mode, step: LinkedStep, coder: Coder, vars: optValue[], postErrors: boolean): void {
+function resolve(input: CoderInput, mode: Mode, step: LinkedStep, coder: Coder, vars: value[], postErrors: boolean): void {
     const inputString = typeof input === "string" ? input : input.output;
     const checks = coder.checkVars(inputString, ...vars);
     if (checks instanceof Error) {
@@ -93,16 +94,24 @@ function resolve(input: CoderInput, mode: Mode, step: LinkedStep, coder: Coder, 
             output = coder._decode(inputString, ...vars);
             break;
     }
-    const result: CoderResult = {
-        input: input,
-        mode: mode,
-        coder: coder.name,
-        vars: vars,
-        output: output
-    }
     if (step.nextStep === undefined) {
+        const result: CoderOutput = {
+            input: input,
+            mode: mode,
+            coder: coder.name,
+            vars: vars,
+            output: output,
+            score: englishBigramScore(output)
+        }
         post(result);
     } else {
+        const result: CoderResult = {
+            input: input,
+            mode: mode,
+            coder: coder.name,
+            vars: vars,
+            output: output
+        }
         resolveCoder(result, mode, step.nextStep, postErrors);
     }
 }

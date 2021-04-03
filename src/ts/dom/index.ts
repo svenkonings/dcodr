@@ -31,7 +31,6 @@ export class Index {
     addListener(): void {
         this.worker.addEventListener("message", ev => {
             const result = ev.data as WorkerOutput;
-            console.log(result) // FIXME
             if (result instanceof Error) {
                 // Error
                 this.outputComponent.addError(result);
@@ -40,7 +39,7 @@ export class Index {
                 this.inputComponent.processWorkerStatus(result);
                 this.outputComponent.processWorkerStatus(result);
             } else {
-                // CoderResult
+                // CoderOutput
                this.outputComponent.addResult(result);
             }
         })

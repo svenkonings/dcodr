@@ -10,6 +10,7 @@ export class VarDef extends Def {
      * List of values that can be used for brute-forcing.
      * Can be empty.
      */
+        // TODO: Configure brute-force values based on options
     readonly bruteForceValues: values;
 
     constructor(name: string, type: ValueType, ...bruteForceValues: values) {

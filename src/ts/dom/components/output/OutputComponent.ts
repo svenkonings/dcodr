@@ -1,7 +1,7 @@
 import {Component} from "../Component";
 import {ResultsComponent} from "./ResultsComponent";
 import {Index} from "../../index";
-import {CoderResult} from "../../../lib/worker/CoderResult";
+import {CoderOutput} from "../../../lib/worker/CoderResult";
 import {WorkerStatus} from "../../../lib/worker/WorkerStatus";
 
 
@@ -25,18 +25,18 @@ export class OutputComponent extends Component {
     }
 
     clear(): void {
-
+        this.results.clear();
     }
 
-    addResult(result: CoderResult): void {
-
+    addResult(result: CoderOutput): void {
+        this.results.addResult(result);
     }
 
     addError(error: Error): void {
-
+        this.results.addError(error);
     }
 
     processWorkerStatus(status: WorkerStatus): void {
-
+        this.results.processWorkerStatus(status);
     }
 }

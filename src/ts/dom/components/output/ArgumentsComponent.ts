@@ -18,7 +18,7 @@ export class ArgumentsComponent extends Component {
         this.addArgument(number, result);
     }
 
-    addArgument(number: number, result: CoderResult) {
+    addArgument(number: number, result: CoderResult): void {
         const argument = new ArgumentComponent(this, number, this.value.length, result)
         this.value.push(argument);
         this.element.insertBefore(argument.element, this.element.firstElementChild);

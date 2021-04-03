@@ -10,5 +10,3 @@ export type CoderResult = {
     vars: optValue[],
     output: string
 };
-
-// TODO: Add error to result

@@ -1,9 +1,8 @@
-import {WorkerMessage} from "../lib/worker/WorkerMessage";
-import {resolveCoder} from "./DepthFirstSearch";
-import {linkedStep} from "../lib/worker/Step";
+import {WorkerInput} from "../lib/worker/WorkerInput";
+import {resolveSteps} from "./DepthFirstSearch";
 
 const ctx: Worker = self as any; // eslint-disable-line
-ctx.onmessage = ev => {
-    const message: WorkerMessage = ev.data;
-    resolveCoder(message.input, message.mode, linkedStep(...message.steps));
-}
+ctx.addEventListener("message", ev => {
+    const message: WorkerInput = ev.data;
+    resolveSteps(message);
+});

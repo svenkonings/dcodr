@@ -1,1 +1,4 @@
-export type Mode = "encode" | "decode";
+export enum Mode {
+    Encode = "Encode",
+    Decode = "Decode"
+}

@@ -1,32 +1,43 @@
 import {CoderInput, CoderResult} from "../lib/worker/CoderResult";
-import {LinkedStep} from "../lib/worker/Step";
+import {linkedStep, LinkedStep} from "../lib/worker/Step";
 import {BRUTE_FORCE, CODERS, getCoder} from "../lib/coders/Coders";
 import {Coder} from "../lib/coders/Coder";
 import {optValue} from "../lib/values/ValueType";
-import {cartesian} from "../lib/util/functions";
 import {Mode} from "../lib/worker/Mode";
+import {hasBruteForce, WorkerInput} from "../lib/worker/WorkerInput";
+import {WorkerStatus} from "../lib/worker/WorkerStatus";
+import {WorkerOutput} from "../lib/worker/WorkerOutput";
 
-export function resolveCoder(input: CoderInput, mode: Mode, step: LinkedStep): void {
+export function resolveSteps(message: WorkerInput): void {
+    const postErrors = hasBruteForce(message);
+    resolveCoder(message.input, message.mode, linkedStep(message.steps), postErrors);
+    post(WorkerStatus.Done)
+}
+
+export function resolveCoder(input: CoderInput, mode: Mode, step: LinkedStep, postErrors: boolean): void {
     if (step.coder === BRUTE_FORCE) {
         for (const coder of CODERS) {
-            resolveArguments(input, mode, step, coder);
+            resolveArguments(input, mode, step, coder, postErrors);
         }
     } else {
         const coder = getCoder(step.coder);
         if (coder === undefined) {
-            const error = Error(`Cannot find coder: ${step.coder}`);
-            // FIXME errors
+            if (postErrors) {
+                post(Error(`Cannot find coder: ${step.coder}`));
+            }
             return;
         }
-        resolveArguments(input, mode, step, coder);
+        resolveArguments(input, mode, step, coder, postErrors);
     }
 }
 
-function resolveArguments(input: CoderInput, mode: Mode, step: LinkedStep, coder: Coder): void {
+function resolveArguments(input: CoderInput, mode: Mode, step: LinkedStep, coder: Coder, postErrors: boolean): void {
     // Convert the arguments
     const convertedVars = coder.convertArgs(...step.args);
     if (convertedVars instanceof Error) {
-        // FIXME errors
+        if (postErrors) {
+            post(convertedVars);
+        }
         return;
     }
     // Fill-in brute-force variables
@@ -34,9 +45,10 @@ function resolveArguments(input: CoderInput, mode: Mode, step: LinkedStep, coder
     for (let i = 0; i < convertedVars.length; i++) {
         if (i < coder.varDefs.length && convertedVars[i] === undefined) {
             const bruteForceValues = coder.varDefs[i].bruteForceValues
-            if (bruteForceValues === undefined) {
-                const error = Error(`[${coder.varDefs[i].name} Missing variable without brute-force values`);
-                // FIXME errors
+            if (bruteForceValues.length === 0) {
+                if (postErrors) {
+                    post(Error(`[${coder.varDefs[i].name}] Missing variable without brute-force values`));
+                }
                 return;
             } else {
                 possibleVars[i] = bruteForceValues;
@@ -47,24 +59,37 @@ function resolveArguments(input: CoderInput, mode: Mode, step: LinkedStep, coder
     }
 
     // Solve all combinations of variables
-    for (const resolvedVars of cartesian(possibleVars)) {
-        resolveVars(input, mode, step, coder, resolvedVars);
+    resolveVars(input, mode, step, coder, possibleVars, postErrors)
+}
+
+function resolveVars(input: CoderInput, mode: Mode, step: LinkedStep, coder: Coder, possibleVars: optValue[][], postErrors: boolean, currentVars: optValue[] = [], column = 0) {
+    const lastColumn = column === possibleVars.length - 1
+    for (const row of possibleVars[column]) {
+        currentVars.push(row);
+        if (lastColumn) {
+            resolve(input, mode, step, coder, currentVars, postErrors);
+        } else {
+            resolveVars(input, mode, step, coder, possibleVars, postErrors, currentVars, column + 1)
+        }
+        currentVars.pop();
     }
 }
 
-function resolveVars(input: CoderInput, mode: Mode, step: LinkedStep, coder: Coder, vars: optValue[]): void {
+function resolve(input: CoderInput, mode: Mode, step: LinkedStep, coder: Coder, vars: optValue[], postErrors: boolean): void {
     const inputString = typeof input === "string" ? input : input.output;
     const checks = coder.checkVars(inputString, ...vars);
     if (checks instanceof Error) {
-        // FIXME errors
+        if (postErrors) {
+            post(checks);
+        }
         return;
     }
     let output: string;
     switch (mode) {
-        case "encode":
+        case Mode.Encode:
             output = coder._encode(inputString, ...vars);
             break;
-        case "decode":
+        case Mode.Decode:
             output = coder._decode(inputString, ...vars);
             break;
     }
@@ -76,9 +101,12 @@ function resolveVars(input: CoderInput, mode: Mode, step: LinkedStep, coder: Cod
         output: output
     }
     if (step.nextStep === undefined) {
-        postMessage(result);
+        post(result);
     } else {
-        resolveCoder(result, mode, step.nextStep);
+        resolveCoder(result, mode, step.nextStep, postErrors);
     }
 }
 
+function post(message: WorkerOutput): void {
+    postMessage(message);
+}

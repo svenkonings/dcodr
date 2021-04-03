@@ -1,16 +1,16 @@
 import {Component} from "../Component";
-import {Step} from "./Step";
-import {Setting} from "./Setting";
+import {StepComponent} from "./StepComponent";
+import {SettingComponent} from "./SettingComponent";
 import {OptionDef} from "../../../lib/values/OptionDef";
 
-export class Settings extends Component {
-    readonly parent: Step;
+export class SettingsComponent extends Component {
+    readonly parent: StepComponent;
     readonly headElement: HTMLTableSectionElement;
     readonly element: HTMLTableSectionElement
 
-    settings: Setting[];
+    settings: SettingComponent[];
 
-    constructor(parent: Step) {
+    constructor(parent: StepComponent) {
         super();
         this.parent = parent;
         this.headElement = this.parent.getChild("settings-head") as HTMLTableSectionElement;
@@ -30,7 +30,7 @@ export class Settings extends Component {
         this.headElement.hidden = !hasOptions;
         this.element.hidden = !hasOptions;
         for (const optionDef of optionDefs) {
-            const setting = new Setting(this, optionDef);
+            const setting = new SettingComponent(this, optionDef);
             this.settings.push(setting);
             this.element.append(setting.element);
         }

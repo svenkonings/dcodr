@@ -1,29 +1,29 @@
-import {Steps} from "./Steps";
+import {StepsComponent} from "./StepsComponent";
 import {getTemplate} from "../../util";
 import {Component} from "../Component";
-import {Variables} from "./Variables";
-import {Settings} from "./Settings";
+import {VariablesComponent} from "./VariablesComponent";
+import {SettingsComponent} from "./SettingsComponent";
 import {BRUTE_FORCE, CODERS, getCoder} from "../../../lib/coders/Coders";
 import {Coder} from "../../../lib/coders/Coder";
 
-export class Step extends Component {
-    readonly parent: Steps;
+export class StepComponent extends Component {
+    readonly parent: StepsComponent;
     readonly element: HTMLDivElement
 
     readonly coderSelect: HTMLSelectElement;
     readonly removeStepButton: HTMLButtonElement;
-    readonly variables: Variables
-    readonly settings: Settings
+    readonly variables: VariablesComponent
+    readonly settings: SettingsComponent
 
-    constructor(parent: Steps) {
+    constructor(parent: StepsComponent) {
         super();
         this.parent = parent;
         this.element = getTemplate("step") as HTMLDivElement;
 
         this.coderSelect = this.getChild("coder") as HTMLSelectElement;
         this.removeStepButton = this.getChild("remove-step") as HTMLButtonElement;
-        this.variables = new Variables(this);
-        this.settings = new Settings(this);
+        this.variables = new VariablesComponent(this);
+        this.settings = new SettingsComponent(this);
 
         this.initCoderSelect();
         this.removeStepButton.addEventListener("click", () => this.parent.removeStep(this));

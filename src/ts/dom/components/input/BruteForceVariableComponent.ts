@@ -1,11 +1,11 @@
 import {Component} from "../Component";
-import {Variables} from "./Variables";
+import {VariablesComponent} from "./VariablesComponent";
 import {getTemplate} from "../../util";
 
 const PREFIX = "Variable ";
 
-export class BruteForceVariable extends Component {
-    readonly parent: Variables;
+export class BruteForceVariableComponent extends Component {
+    readonly parent: VariablesComponent;
     readonly element: HTMLTableRowElement;
 
     readonly name: HTMLTableCellElement;
@@ -14,7 +14,7 @@ export class BruteForceVariable extends Component {
     readonly input: HTMLInputElement;
     readonly removeButton: HTMLButtonElement;
 
-    constructor(parent: Variables, number: number) {
+    constructor(parent: VariablesComponent, number: number) {
         super();
         this.parent = parent;
         this.element = getTemplate("bruteForceRow") as HTMLTableRowElement;

@@ -1,20 +1,20 @@
 import {Component} from "../Component";
-import {Step} from "./Step";
-import {Variable} from "./Variable";
-import {BruteForceVariable} from "./BruteForceVariable";
+import {StepComponent} from "./StepComponent";
+import {VariableComponent} from "./VariableComponent";
+import {BruteForceVariableComponent} from "./BruteForceVariableComponent";
 import {VarDef} from "../../../lib/values/VarDef";
 
-export class Variables extends Component {
-    readonly parent: Step;
+export class VariablesComponent extends Component {
+    readonly parent: StepComponent;
     readonly headElement: HTMLTableSectionElement;
     readonly element: HTMLTableSectionElement
 
     bruteForce: boolean;
-    variables: Variable[];
-    bruteForceVariables: BruteForceVariable[];
+    variables: VariableComponent[];
+    bruteForceVariables: BruteForceVariableComponent[];
     readonly addVariableButton: HTMLButtonElement;
 
-    constructor(parent: Step) {
+    constructor(parent: StepComponent) {
         super();
         this.parent = parent;
         this.headElement = this.parent.getChild("variables-head") as HTMLTableSectionElement;
@@ -42,7 +42,7 @@ export class Variables extends Component {
         this.element.hidden = !hasVars;
         this.addVariableButton.hidden = true;
         for (const varDef of varDefs) {
-            const variable = new Variable(this, varDef);
+            const variable = new VariableComponent(this, varDef);
             this.variables.push(variable);
             this.element.append(variable.element);
         }
@@ -57,12 +57,12 @@ export class Variables extends Component {
     }
 
     addBruteForceVariable(): void {
-        const variable = new BruteForceVariable(this, this.bruteForceVariables.length + 1);
+        const variable = new BruteForceVariableComponent(this, this.bruteForceVariables.length + 1);
         this.bruteForceVariables.push(variable);
         this.element.append(variable.element);
     }
 
-    removeBruteForceVariable(variable: BruteForceVariable): void {
+    removeBruteForceVariable(variable: BruteForceVariableComponent): void {
         const index = this.bruteForceVariables.indexOf(variable);
         variable.element.remove();
         this.bruteForceVariables = this.bruteForceVariables.filter(item => item !== variable);

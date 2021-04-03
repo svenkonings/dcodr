@@ -1,21 +1,21 @@
 import {Component} from "../Component";
-import {Results} from "./Results";
+import {ResultsComponent} from "./ResultsComponent";
 import {getTemplate} from "../../util";
-import {Arguments} from "./Arguments";
+import {ArgumentsComponent} from "./ArgumentsComponent";
 
-export class Result extends Component {
-    readonly parent: Results;
+export class ResultComponent extends Component {
+    readonly parent: ResultsComponent;
     readonly element: HTMLDivElement;
 
-    readonly coders: Arguments;
+    readonly coders: ArgumentsComponent;
     readonly output: HTMLParagraphElement;
 
-    constructor(parent: Results) {
+    constructor(parent: ResultsComponent) {
         super();
         this.parent = parent;
         this.element = getTemplate("result") as HTMLDivElement;
 
-        this.coders = new Arguments(this);
+        this.coders = new ArgumentsComponent(this);
         this.output = this.getChild("output") as HTMLParagraphElement;
     }
 }

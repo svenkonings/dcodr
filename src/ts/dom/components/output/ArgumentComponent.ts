@@ -1,17 +1,17 @@
 import {Component} from "../Component";
-import {Arguments} from "./Arguments";
+import {ArgumentsComponent} from "./ArgumentsComponent";
 import {getTemplate} from "../../util";
 import {Coder} from "../../../lib/coders/Coder";
 
-export class Argument extends Component {
-    readonly parent: Arguments;
+export class ArgumentComponent extends Component {
+    readonly parent: ArgumentsComponent;
     readonly element: HTMLDivElement;
 
     readonly coderName: HTMLButtonElement;
     readonly coderValues: HTMLDivElement;
     readonly coderTable: HTMLTableElement;
 
-    constructor(parent: Arguments, number: number, coder: Coder, ...args: string[]) {
+    constructor(parent: ArgumentsComponent, number: number, coder: Coder, ...args: string[]) {
         super();
         this.parent = parent;
         this.element = getTemplate("argument") as HTMLDivElement;

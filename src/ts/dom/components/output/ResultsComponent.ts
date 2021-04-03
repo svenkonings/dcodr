@@ -1,14 +1,14 @@
 import {Component} from "../Component";
-import {OutputContainer} from "./OutputContainer";
-import {Result} from "./Result";
+import {OutputComponent} from "./OutputComponent";
+import {ResultComponent} from "./ResultComponent";
 
-export class Results extends Component {
-    readonly parent: OutputContainer;
+export class ResultsComponent extends Component {
+    readonly parent: OutputComponent;
     readonly element: HTMLDivElement;
 
-    value: Result[];
+    value: ResultComponent[];
 
-    constructor(parent: OutputContainer) {
+    constructor(parent: OutputComponent) {
         super();
         this.parent = parent;
         this.element = document.getElementById("results") as HTMLDivElement;

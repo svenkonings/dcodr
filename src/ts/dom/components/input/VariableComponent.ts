@@ -1,16 +1,16 @@
 import {Component} from "../Component";
+import {VariablesComponent} from "./VariablesComponent";
 import {getTemplate} from "../../util";
-import {Settings} from "./Settings";
-import {OptionDef} from "../../../lib/values/OptionDef";
+import {VarDef} from "../../../lib/values/VarDef";
 
-export class Setting extends Component {
-    readonly parent: Settings;
+export class VariableComponent extends Component {
+    readonly parent: VariablesComponent;
     readonly element: HTMLTableRowElement;
 
     readonly name: HTMLTableCellElement;
     readonly input: HTMLInputElement;
 
-    constructor(parent: Settings, optionDef: OptionDef) {
+    constructor(parent: VariablesComponent, varDef: VarDef) {
         super();
         this.parent = parent;
         this.element = getTemplate("valueRow") as HTMLTableRowElement;
@@ -18,11 +18,11 @@ export class Setting extends Component {
         this.name = this.getChild("value-name") as HTMLTableCellElement;
         this.input = this.getChild("value-input") as HTMLInputElement;
 
-        this.name.innerText = optionDef.name;
-        this.input.value = optionDef.defaultValue.toString();
+        this.name.innerText = varDef.name;
+        this.input.placeholder = varDef.type;
     }
 
-    getOption(): string {
+    getVariable(): string {
         return this.input.value;
     }
 }

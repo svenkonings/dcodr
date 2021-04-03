@@ -1,15 +1,15 @@
-import {Step} from "./Step";
-import {InputContainer} from "./InputContainer";
+import {StepComponent} from "./StepComponent";
+import {InputComponent} from "./InputComponent";
 import {Component} from "../Component";
 
-export class Steps extends Component {
-    readonly parent: InputContainer;
+export class StepsComponent extends Component {
+    readonly parent: InputComponent;
     readonly element: HTMLDivElement;
 
-    value: Step[];
+    value: StepComponent[];
     readonly addStepButton: HTMLButtonElement
 
-    constructor(parent: InputContainer) {
+    constructor(parent: InputComponent) {
         super();
         this.parent = parent;
         this.element = document.getElementById("steps") as HTMLDivElement;
@@ -20,13 +20,13 @@ export class Steps extends Component {
     }
 
     addStep(): void {
-        const step = new Step(this);
+        const step = new StepComponent(this);
         this.value.push(step);
         this.element.insertBefore(step.element, this.addStepButton);
         this.toggleRemoveButtons();
     }
 
-    removeStep(step: Step): void {
+    removeStep(step: StepComponent): void {
         step.element.remove();
         this.value = this.value.filter(item => item !== step);
         this.toggleRemoveButtons();

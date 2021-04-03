@@ -1,22 +1,42 @@
 import {Component} from "../Component";
 import {ResultsComponent} from "./ResultsComponent";
-import {WorkerOutput} from "../../../lib/worker/WorkerOutput";
+import {Index} from "../../index";
+import {CoderResult} from "../../../lib/worker/CoderResult";
+import {WorkerStatus} from "../../../lib/worker/WorkerStatus";
 
 
 export class OutputComponent extends Component {
+    readonly parent: Index;
     readonly element: HTMLDivElement;
-    readonly worker: Worker;
+    worker: Worker;
 
     readonly results: ResultsComponent;
 
-    constructor(worker: Worker) {
+    constructor(parent: Index, worker: Worker) {
         super();
+        this.parent = parent;
         this.element = document.getElementById("input-container") as HTMLDivElement;
         this.worker = worker;
         this.results = new ResultsComponent(this);
-        this.worker.addEventListener("message", ev => {
-            const result = ev.data as WorkerOutput;
-            console.log(result) // FIXME Add results to UI
-        })
+    }
+
+    setWorker(worker: Worker): void {
+        this.worker = worker;
+    }
+
+    clear(): void {
+
+    }
+
+    addResult(result: CoderResult): void {
+
+    }
+
+    addError(error: Error): void {
+
+    }
+
+    processWorkerStatus(status: WorkerStatus): void {
+
     }
 }

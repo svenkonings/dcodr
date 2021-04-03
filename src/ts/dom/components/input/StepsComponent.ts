@@ -1,6 +1,7 @@
 import {StepComponent} from "./StepComponent";
 import {InputComponent} from "./InputComponent";
 import {Component} from "../Component";
+import {Step} from "../../../lib/worker/Step";
 
 export class StepsComponent extends Component {
     readonly parent: InputComponent;
@@ -34,5 +35,9 @@ export class StepsComponent extends Component {
 
     toggleRemoveButtons(): void {
         this.value.forEach(step => step.hideRemoveStepButton(this.value.length <= 1));
+    }
+
+    getSteps(): Step[] {
+        return this.value.map(step => step.getStep());
     }
 }

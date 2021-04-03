@@ -25,7 +25,3 @@ export function linkedStep(steps: Step[]): LinkedStep {
     }
     return step as LinkedStep;
 }
-
-// FIXME: Args with bruteforcevalues should be brute forcable in UI (when selecting coder)
-// FIXME: Settings should have reset to default button in UI
-// FIXME: Preview bruteforcevalues of arg (when selecting coder)

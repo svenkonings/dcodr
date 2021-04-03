@@ -2,6 +2,7 @@ import {StepsComponent} from "./StepsComponent";
 import {Component} from "../Component";
 import {WorkerInput} from "../../../lib/worker/WorkerInput";
 import {Mode} from "../../../lib/worker/Mode";
+import {Step} from "../../../lib/worker/Step";
 
 export class InputComponent extends Component {
     readonly element: HTMLDivElement;
@@ -24,14 +25,26 @@ export class InputComponent extends Component {
             const message: WorkerInput = {
                 input: this.getInput(),
                 mode: Mode.Encode,
-                steps: []//this.steps.getSteps() // FIXME implement method
+                steps: this.getSteps()
             }
             worker.postMessage(message);
         })
         this.decodeButton = document.getElementById("decode") as HTMLButtonElement;
+        this.decodeButton.addEventListener("click", () => {
+            const message: WorkerInput = {
+                input: this.getInput(),
+                mode: Mode.Decode,
+                steps: this.getSteps()
+            }
+            worker.postMessage(message);
+        })
     }
 
     getInput(): string {
         return this.input.value;
+    }
+
+    getSteps(): Step[] {
+        return this.steps.getSteps();
     }
 }

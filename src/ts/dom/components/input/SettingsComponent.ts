@@ -41,4 +41,8 @@ export class SettingsComponent extends Component {
         this.headElement.hidden = true;
         this.element.hidden = true;
     }
+
+    getOptions(): string[] {
+        return this.settings.map(setting => setting.getOption());
+    }
 }

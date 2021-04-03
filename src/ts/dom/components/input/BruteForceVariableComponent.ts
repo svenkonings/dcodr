@@ -1,6 +1,7 @@
 import {Component} from "../Component";
 import {VariablesComponent} from "./VariablesComponent";
 import {getTemplate} from "../../util";
+import {optString} from "../../../lib/util/types";
 
 const PREFIX = "Variable ";
 
@@ -17,7 +18,7 @@ export class BruteForceVariableComponent extends Component {
     constructor(parent: VariablesComponent, number: number) {
         super();
         this.parent = parent;
-        this.element = getTemplate("bruteForceRow") as HTMLTableRowElement;
+        this.element = getTemplate("bruteForceVariableRow") as HTMLTableRowElement;
 
         this.number = number;
         this.name = this.getChild("value-name") as HTMLTableCellElement;
@@ -42,7 +43,7 @@ export class BruteForceVariableComponent extends Component {
         return this.bruteForce.checked;
     }
 
-    getVariable(): string {
-        return this.input.value;
+    getVariable(): optString {
+        return this.isBruteForce() ? undefined : this.input.value;
     }
 }

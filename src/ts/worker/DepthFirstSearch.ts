@@ -9,7 +9,7 @@ import {WorkerStatus} from "../lib/worker/WorkerStatus";
 import {WorkerOutput} from "../lib/worker/WorkerOutput";
 
 export function resolveSteps(message: WorkerInput): void {
-    const postErrors = hasBruteForce(message);
+    const postErrors = !hasBruteForce(message);
     resolveCoder(message.input, message.mode, linkedStep(message.steps), postErrors);
     post(WorkerStatus.Done)
 }

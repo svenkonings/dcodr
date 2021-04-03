@@ -2,7 +2,7 @@ import {Coder} from "./Coder";
 import {varDef} from "../values/VarDef";
 import {ValueType} from "../values/ValueType";
 import {optionDef} from "../values/OptionDef";
-import {range} from "../util/functions";
+import {mod, range} from "../util/functions";
 
 const abc = "abcdefghijklmnopqrstuvwxyz";
 const ignore = true
@@ -24,7 +24,7 @@ export class Caesar extends Coder {
 
         return input.split("").map(value => {
             const index = alphabet.indexOf(value);
-            return index >= 0 ? alphabet.charAt((index + shift) % alphabet.length) : value;
+            return index >= 0 ? alphabet.charAt(mod((index + shift), alphabet.length)) : value;
         }).join("")
     }
 

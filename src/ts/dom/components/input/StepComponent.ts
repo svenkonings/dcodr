@@ -5,6 +5,8 @@ import {VariablesComponent} from "./VariablesComponent";
 import {SettingsComponent} from "./SettingsComponent";
 import {BRUTE_FORCE, CODERS, getCoder} from "../../../lib/coders/Coders";
 import {Coder} from "../../../lib/coders/Coder";
+import {optString} from "../../../lib/util/types";
+import {Step} from "../../../lib/worker/Step";
 
 export class StepComponent extends Component {
     readonly parent: StepsComponent;
@@ -61,5 +63,20 @@ export class StepComponent extends Component {
 
     hideRemoveStepButton(hidden: boolean): void {
         this.removeStepButton.style.visibility = hidden ? "hidden" : "visible";
+    }
+
+    getStep(): Step {
+        return {
+            coder: this.getCoder(),
+            args: this.getArguments()
+        }
+    }
+
+    getCoder(): string {
+        return this.coderSelect.value;
+    }
+
+    getArguments(): optString[] {
+        return this.variables.getVariables().concat(this.settings.getOptions());
     }
 }

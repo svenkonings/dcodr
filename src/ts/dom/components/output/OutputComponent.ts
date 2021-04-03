@@ -1,6 +1,6 @@
 import {Component} from "../Component";
 import {ResultsComponent} from "./ResultsComponent";
-import {CoderResult} from "../../../lib/worker/CoderResult";
+import {WorkerOutput} from "../../../lib/worker/WorkerOutput";
 
 
 export class OutputComponent extends Component {
@@ -15,7 +15,7 @@ export class OutputComponent extends Component {
         this.worker = worker;
         this.results = new ResultsComponent(this);
         this.worker.addEventListener("message", ev => {
-            const result = ev.data as CoderResult;
+            const result = ev.data as WorkerOutput;
             console.log(result) // FIXME Add results to UI
         })
     }

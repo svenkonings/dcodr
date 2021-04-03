@@ -3,7 +3,9 @@ import {StepComponent} from "./StepComponent";
 import {VariableComponent} from "./VariableComponent";
 import {BruteForceVariableComponent} from "./BruteForceVariableComponent";
 import {VarDef} from "../../../lib/values/VarDef";
+import {optString} from "../../../lib/util/types";
 
+// TODO: Preview bruteforcevalues of arg (when selecting coder)
 export class VariablesComponent extends Component {
     readonly parent: StepComponent;
     readonly headElement: HTMLTableSectionElement;
@@ -69,5 +71,10 @@ export class VariablesComponent extends Component {
         for (let i = index; i < this.bruteForceVariables.length; i++) {
             this.bruteForceVariables[i].setNumber(i + 1);
         }
+    }
+
+    getVariables(): optString[] {
+        const variables = this.bruteForce ? this.bruteForceVariables : this.variables;
+        return variables.map((variable: VariableComponent | BruteForceVariableComponent) => variable.getVariable());
     }
 }

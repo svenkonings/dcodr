@@ -174,7 +174,7 @@ export abstract class Coder {
                 return Error(`[${this.varDefs[i].name}] Missing variable`);
             }
         }
-        this._checkVars(input, ...vars);
+        return this._checkVars(input, ...vars);
     }
 
     abstract _checkVars(input: string, ...vars: optValue[]): Error | undefined;

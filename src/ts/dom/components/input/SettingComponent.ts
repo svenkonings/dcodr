@@ -3,6 +3,7 @@ import {getTemplate} from "../../util";
 import {SettingsComponent} from "./SettingsComponent";
 import {OptionDef} from "../../../lib/values/OptionDef";
 
+// TODO: Settings should have reset to default button in UI
 export class SettingComponent extends Component {
     readonly parent: SettingsComponent;
     readonly element: HTMLTableRowElement;
@@ -13,7 +14,7 @@ export class SettingComponent extends Component {
     constructor(parent: SettingsComponent, optionDef: OptionDef) {
         super();
         this.parent = parent;
-        this.element = getTemplate("valueRow") as HTMLTableRowElement;
+        this.element = getTemplate("settingRow") as HTMLTableRowElement;
 
         this.name = this.getChild("value-name") as HTMLTableCellElement;
         this.input = this.getChild("value-input") as HTMLInputElement;

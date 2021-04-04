@@ -1,27 +1,33 @@
-import {Component} from "../Component";
+import {LazyComponent} from "../LazyComponent";
 import {ResultsComponent} from "./ResultsComponent";
 import {getTemplate} from "../../util";
 import {ArgumentsComponent} from "./ArgumentsComponent";
 import {CoderOutput} from "../../../lib/worker/CoderResult";
 
-export class ResultComponent extends Component {
+export class ResultComponent extends LazyComponent {
     readonly parent: ResultsComponent;
-    readonly element: HTMLDivElement;
+    protected element: HTMLDivElement | undefined;
 
+    readonly id: number
     readonly result: CoderOutput;
 
-    readonly coders: ArgumentsComponent;
-    readonly output: HTMLParagraphElement;
+    protected coders: ArgumentsComponent | undefined;
+    protected output: HTMLParagraphElement | undefined;
 
-    constructor(parent: ResultsComponent, number: number, result: CoderOutput) {
+    constructor(parent: ResultsComponent, id: number, result: CoderOutput) {
         super();
         this.parent = parent;
-        this.element = getTemplate("result") as HTMLDivElement;
-
+        this.id = id;
         this.result = result;
+    }
 
-        this.coders = new ArgumentsComponent(this, number, result);
-        this.output = this.getChild("output") as HTMLParagraphElement;
-        this.output.innerText = result.output;
+    getElement(): HTMLDivElement {
+        if (this.element === undefined) {
+            this.element = getTemplate("result") as HTMLDivElement;
+            this.coders = new ArgumentsComponent(this, this.id, this.result);
+            this.output = this.getChild("output") as HTMLParagraphElement;
+            this.output.innerText = this.result.output;
+        }
+        return this.element;
     }
 }

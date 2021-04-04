@@ -14,12 +14,12 @@ export class ArgumentComponent extends Component {
     readonly coderValues: HTMLDivElement;
     readonly coderTable: HTMLTableElement;
 
-    constructor(parent: ArgumentsComponent, parentNumber: number, number: number, result: CoderResult) {
+    constructor(parent: ArgumentsComponent, parentId: number, id: number, result: CoderResult) {
         super();
         this.parent = parent;
         this.element = getTemplate("argument") as HTMLDivElement;
 
-        const className = "collapse" + parentNumber + number;
+        const className = "collapse" + parentId + id;
         this.coderName = this.getChild("coder-name") as HTMLButtonElement;
         this.coderName.setAttribute("data-bs-target", "." + className);
         this.coderValues = this.getChild("coder-values") as HTMLDivElement;

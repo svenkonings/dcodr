@@ -8,6 +8,7 @@ import {Coder} from "../../../lib/coders/Coder";
 import {optString} from "../../../lib/util/types";
 import {Step} from "../../../lib/worker/Step";
 
+// TODO: Use different fields for different types (instead of always using text fields)
 export class StepComponent extends Component {
     readonly parent: StepsComponent;
     readonly element: HTMLDivElement

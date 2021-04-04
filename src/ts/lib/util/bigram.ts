@@ -680,16 +680,24 @@ const englishBigrams: Ngram = {
     "QZ": 6.475294119109714e-06
 }
 
-// TODO: Improve scoring algorithm (compare frequencies)
 export function englishBigramScore(text: string): number {
     const filteredText = text.toUpperCase().replace(/[^A-Z]/g, "");
-    if (filteredText.length === 0) {
-        return 0;
+    if (filteredText.length < 1) {
+        // Cannot calculate score, assign largest distance
+        return Infinity;
     }
-    let score = 0
+    const bigrams = new Map<string, number>();
     for (let i = 0; i < filteredText.length - 1; i++) {
         const bigram = filteredText.substr(i, 2);
-        score += englishBigrams[bigram]
+        const count = bigrams.get(bigram) || 0;
+        bigrams.set(bigram, count + 1);
     }
-    return score / filteredText.length;
+    const total = bigrams.size
+    let distance = 0;
+    for (const [bigram, count] of bigrams) {
+        const freq = (count * 100) / total;
+        const englishFreq = englishBigrams[bigram];
+        distance += Math.abs(freq - englishFreq);
+    }
+    return distance / total;
 }

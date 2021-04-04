@@ -24,18 +24,19 @@ export class ResultsComponent extends Component {
         this.value = [];
     }
 
-    // TODO: Add filter based on minimum score
+    // TODO: Add pagination
     addResult(result: CoderOutput): void {
         const component = new ResultComponent(this, this.value.length, result);
         for (let i = 0; i < this.value.length; i++) {
             const otherComponent = this.value[i];
-            if (result.score > otherComponent.result.score) {
+            // Sort smallest scores first (least distance from english bigram frequency)
+            if (result.score < otherComponent.result.score) {
                 this.value.splice(i, 0, component);
                 this.element.insertBefore(component.element, otherComponent.element);
                 return;
             }
         }
-        // Lowest score, add component to end
+        // Highest score, add to end
         this.value.push(component);
         this.element.append(component.element);
     }

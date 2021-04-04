@@ -3,6 +3,7 @@ import {InputComponent} from "./InputComponent";
 import {Component} from "../Component";
 import {Step} from "../../../lib/worker/Step";
 
+// TODO: Add presets
 export class StepsComponent extends Component {
     readonly parent: InputComponent;
     readonly element: HTMLDivElement;

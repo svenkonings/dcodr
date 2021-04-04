@@ -7,20 +7,20 @@ export class ArgumentsComponent extends Component {
     readonly parent: ResultComponent;
     readonly element: HTMLDivElement;
 
-    value: ArgumentComponent[];
+    arguments: ArgumentComponent[];
 
     constructor(parent: ResultComponent, id: number, result: CoderResult) {
         super();
         this.parent = parent;
         this.element = parent.getChild("arguments") as HTMLDivElement;
 
-        this.value = [];
+        this.arguments = [];
         this.addArgument(id, result);
     }
 
     addArgument(id: number, result: CoderResult): void {
-        const argument = new ArgumentComponent(this, id, this.value.length, result)
-        this.value.push(argument);
+        const argument = new ArgumentComponent(this, id, this.arguments.length, result)
+        this.arguments.push(argument);
         this.element.insertBefore(argument.element, this.element.firstElementChild);
         if (typeof result.input !== "string") {
             this.addArgument(id, result.input);

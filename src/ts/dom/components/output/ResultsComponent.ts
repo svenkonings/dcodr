@@ -18,7 +18,8 @@ export class ResultsComponent extends Component {
     readonly paginationNext: HTMLButtonElement;
     readonly paginationLast: HTMLButtonElement;
 
-    value: ResultComponent[];
+    results: CoderOutput[];
+    resultComponents: ResultComponent[];
     page: number;
     start: number;
     end: number;
@@ -36,7 +37,8 @@ export class ResultsComponent extends Component {
         this.paginationNext = document.getElementById("next") as HTMLButtonElement;
         this.paginationLast = document.getElementById("last") as HTMLButtonElement;
 
-        this.value = [];
+        this.results = [];
+        this.resultComponents = [];
         this.page = 1;
         this.start = 0;
         this.end = itemsPerPage;
@@ -50,7 +52,8 @@ export class ResultsComponent extends Component {
     }
 
     clear(): void {
-        this.value = [];
+        this.results = [];
+        this.resultComponents = [];
         this.setPage(1);
         this.setPages(1);
     }
@@ -81,14 +84,17 @@ export class ResultsComponent extends Component {
         this.paginationNext.disabled = this.page >= this.pages;
         this.paginationLast.disabled = this.page >= this.pages - 1;
 
+        this.resultComponents = [];
         this.element.innerHTML = "";
-        for (let i = this.start; i < this.value.length && i < this.end; i++) {
-            this.element.append(this.value[i].getElement());
+        for (let i = this.start; i < this.results.length && i < this.end; i++) {
+            const component = new ResultComponent(this, i, this.results[i]);
+            this.resultComponents.push(component);
+            this.element.append(component.element);
         }
     }
 
     updatePages(): void {
-        const newPages = Math.ceil(this.value.length / itemsPerPage);
+        const newPages = Math.ceil(this.results.length / itemsPerPage);
         if (this.pages !== newPages) {
             this.setPages(newPages);
         }
@@ -102,33 +108,38 @@ export class ResultsComponent extends Component {
     }
 
     addResult(result: CoderOutput): void {
-        const component = new ResultComponent(this, this.value.length, result);
-        for (let i = 0; i < this.value.length; i++) {
-            const otherComponent = this.value[i];
+        for (let i = 0; i < this.results.length; i++) {
+            const otherResult = this.results[i];
             // Sort smallest scores first (least distance from english bigram frequency)
-            if (result.score < otherComponent.result.score) {
-                this.value.splice(i, 0, component);
+            if (result.score < otherResult.score) {
+                this.results.splice(i, 0, result);
                 this.updatePages();
                 // If the element belongs on the current page
                 if (i >= this.start && i < this.end) {
+                    const index = i - this.start;
                     // Insert it before the element with a larger score
-                    this.element.insertBefore(component.getElement(), otherComponent.getElement());
-                    // If there are more results than the end of this page
-                    if (this.value.length > this.end) {
-                        // Remove the result that belongs to the next page
-                        this.element.removeChild(this.value[this.end].getElement());
+                    const component = new ResultComponent(this, this.resultComponents.length, result);
+                    const otherComponent = this.resultComponents[index];
+                    this.resultComponents.splice(index, 0, component);
+                    this.element.insertBefore(component.element, otherComponent.element);
+                    // If there are more results than items per page
+                    if (this.resultComponents.length > itemsPerPage) {
+                        // Remove the last result
+                        this.element.removeChild((this.resultComponents.pop() as ResultComponent).element);
                     }
                 }
                 return; // after inserting result
             }
         }
         // Highest score, add to end
-        this.value.push(component);
+        this.results.push(result);
         this.updatePages();
-        // If there are less results than the end of this page
-        if (this.value.length <= this.end) {
+        // If there are less results than items per page
+        if (this.resultComponents.length <= itemsPerPage) {
             // Add this result to the bottom of this page
-            this.element.append(component.getElement());
+            const component = new ResultComponent(this, this.resultComponents.length, result);
+            this.resultComponents.push(component);
+            this.element.append(component.element);
         }
     }
 

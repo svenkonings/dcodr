@@ -116,7 +116,6 @@ function resolve(input: CoderInput, mode: Mode, step: LinkedStep, coder: Coder, 
     }
 }
 
-// TODO: Batch CoderOutput when there are many being send
 function post(message: WorkerOutput): void {
     postMessage(message);
 }

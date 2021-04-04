@@ -87,7 +87,7 @@ export class ResultsComponent extends Component {
         this.resultComponents = [];
         this.element.innerHTML = "";
         for (let i = this.start; i < this.results.length && i < this.end; i++) {
-            const component = new ResultComponent(this, i, this.results[i]);
+            const component = new ResultComponent(this, this.resultComponents.length, this.results[i]);
             this.resultComponents.push(component);
             this.element.append(component.element);
         }
@@ -109,9 +109,8 @@ export class ResultsComponent extends Component {
 
     addResult(result: CoderOutput): void {
         for (let i = 0; i < this.results.length; i++) {
-            const otherResult = this.results[i];
             // Sort smallest scores first (least distance from english bigram frequency)
-            if (result.score < otherResult.score) {
+            if (result.score < this.results[i].score) {
                 this.results.splice(i, 0, result);
                 this.updatePages();
                 // If the element belongs on the current page

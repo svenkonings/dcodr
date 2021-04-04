@@ -9,13 +9,16 @@ import {WorkerStatus} from "../lib/worker/WorkerStatus";
 import {WorkerOutput} from "../lib/worker/WorkerOutput";
 import {englishBigramScore} from "../lib/util/bigram";
 
+const outputs = new Set<string>();
+
 export function resolveSteps(message: WorkerInput): void {
     const postErrors = !hasBruteForce(message);
     resolveCoder(message.input, message.mode, linkedStep(message.steps), postErrors);
+    outputs.clear();
     post(WorkerStatus.Done)
 }
 
-export function resolveCoder(input: CoderInput, mode: Mode, step: LinkedStep, postErrors: boolean): void {
+function resolveCoder(input: CoderInput, mode: Mode, step: LinkedStep, postErrors: boolean): void {
     if (step.coder === BRUTE_FORCE) {
         for (const coder of CODERS) {
             resolveArguments(input, mode, step, coder, postErrors);
@@ -95,15 +98,18 @@ function resolve(input: CoderInput, mode: Mode, step: LinkedStep, coder: Coder, 
             break;
     }
     if (step.nextStep === undefined) {
-        const result: CoderOutput = {
-            input: input,
-            mode: mode,
-            coder: coder.name,
-            vars: vars,
-            output: output,
-            score: englishBigramScore(output)
+        if (!outputs.has(output)) {
+            outputs.add(output);
+            const result: CoderOutput = {
+                input: input,
+                mode: mode,
+                coder: coder.name,
+                vars: vars,
+                output: output,
+                score: englishBigramScore(output)
+            }
+            post(result);
         }
-        post(result);
     } else {
         const result: CoderResult = {
             input: input,

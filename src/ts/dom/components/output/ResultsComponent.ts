@@ -107,38 +107,49 @@ export class ResultsComponent extends Component {
         this.paginationLast.disabled = this.page >= this.pages - 1;
     }
 
+    // Sort smallest scores first (least distance from english bigram frequency)
     addResult(result: CoderOutput): void {
-        for (let i = 0; i < this.results.length; i++) {
-            // Sort smallest scores first (least distance from english bigram frequency)
-            if (result.score < this.results[i].score) {
-                this.results.splice(i, 0, result);
-                this.updatePages();
-                // If the element belongs on the current page
-                if (i >= this.start && i < this.end) {
-                    const index = i - this.start;
-                    // Insert it before the element with a larger score
-                    const component = new ResultComponent(this, this.resultComponents.length, result);
-                    const otherComponent = this.resultComponents[index];
-                    this.resultComponents.splice(index, 0, component);
-                    this.element.insertBefore(component.element, otherComponent.element);
-                    // If there are more results than items per page
-                    if (this.resultComponents.length > itemsPerPage) {
-                        // Remove the last result
-                        this.element.removeChild((this.resultComponents.pop() as ResultComponent).element);
-                    }
-                }
-                return; // after inserting result
+        // Rightmost binary search
+        let left = 0;
+        let right = this.results.length;
+        while (left < right) {
+            const mid = (left + right) >>> 1; // Same as Math.floor((low + high) / 2)
+            if (this.results[mid].score > result.score) {
+                right = mid;
+            } else {
+                left = mid + 1;
             }
         }
-        // Highest score, add to end
-        this.results.push(result);
-        this.updatePages();
-        // If there are less results than items per page
-        if (this.resultComponents.length <= itemsPerPage) {
-            // Add this result to the bottom of this page
-            const component = new ResultComponent(this, this.resultComponents.length, result);
-            this.resultComponents.push(component);
-            this.element.append(component.element);
+        if (right !== this.results.length) {
+            // Insert result
+            this.results.splice(right, 0, result);
+            this.updatePages();
+            // If the element belongs on the current page
+            if (right >= this.start && right < this.end) {
+                // Insert it before the element with a larger score
+                const index = right - this.start;
+                const component = new ResultComponent(this, this.results.length, result);
+                const otherComponent = this.resultComponents[index];
+                this.resultComponents.splice(index, 0, component);
+                this.element.insertBefore(component.element, otherComponent.element);
+                // If there are more results than items per page
+                if (this.resultComponents.length > itemsPerPage) {
+                    // Remove the last result
+                    const lastComponent = this.resultComponents.pop() as ResultComponent;
+                    this.element.removeChild(lastComponent.element);
+                }
+            }
+        } else {
+            // Highest score, add to end
+            this.results.push(result);
+            this.updatePages();
+            // If there are less results than items per page
+            if (this.resultComponents.length <= itemsPerPage) {
+                // Add this result to the bottom of the page
+                const component = new ResultComponent(this, this.results.length, result);
+                this.resultComponents.push(component);
+                this.element.append(component.element);
+            }
         }
     }
 

@@ -9,7 +9,7 @@ export class VariableComponent extends Component {
     readonly element: HTMLTableRowElement;
 
     readonly name: HTMLTableCellElement;
-    readonly bruteForceColumn: HTMLTableCellElement;
+    readonly bruteForceContainer: HTMLDivElement;
     readonly bruteForce: HTMLInputElement;
     readonly input: HTMLInputElement;
 
@@ -19,14 +19,14 @@ export class VariableComponent extends Component {
         this.element = getTemplate("variableRow") as HTMLTableRowElement;
 
         this.name = this.getChild("value-name") as HTMLTableCellElement;
-        this.bruteForceColumn = this.getChild("value-brute-force-column") as HTMLTableCellElement;
+        this.bruteForceContainer = this.getChild("value-brute-force-container") as HTMLDivElement;
         this.bruteForce = this.getChild("value-brute-force") as HTMLInputElement;
         this.input = this.getChild("value-input") as HTMLInputElement;
 
         this.name.innerText = varDef.name;
         this.input.placeholder = varDef.type;
         if (varDef.bruteForceValues.length === 0) {
-            this.bruteForceColumn.style.visibility = "hidden";
+            this.bruteForceContainer.style.visibility = "hidden";
         }
     }
 
